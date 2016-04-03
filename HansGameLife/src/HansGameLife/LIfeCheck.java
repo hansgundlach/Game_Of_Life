@@ -1,0 +1,121 @@
+package HansGameLife;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.Arrays;
+
+public class LIfeCheck {
+	static int[][] array = new int[40][40];
+    public static void main(String[] args) throws InterruptedException {
+    	array[19][15]=1;
+        array[19][16]=1;
+        array[19][19]=1;
+        array[19][20]=1;
+        array[19][21]=1;
+        array[18][18]=1;
+        array[17][16]=1;
+        array[5][6] = 1;
+        
+        int stop = 0;
+        //System.out.println(Arrays.deepToString(array));
+        //this will be adjusted later for actual size
+        DrawingPanel p = new DrawingPanel(400,400);
+        
+        System.out.println(nextTo(19,20));
+        //this does most of the action iterating the game for about 30 seconds
+        while(stop<1000){
+        	Graphics g =  p.getGraphics();
+        	g.setColor(Color.BLACK);
+        	g.fillRect(0, 0, 400, 400);
+        	 drawArray(array,p);
+        	 
+        	 
+        	 nextGeneration();
+            //changes array
+        
+        	 p.sleep(125);
+        	stop++;
+        }
+    	
+    	
+    	}
+
+    
+//returns the number of dead and live adjacent cells
+public static int nextTo(int a, int b){
+    	int sum = 0;
+    
+    	int[] adjunc = new int[]{array[m(a+1)][m(b+1)],array[m(a+1)][b],array[m(a+1)][m(b-1)],array[a][m(b+1)], 
+   				 array[m(a-1)][m(b-1)],array[m(a-1)][b],array[m(a-1)][m(b+1)],array[m(a)][m(b-1)]}; 	
+    	
+    	for(int check: adjunc){
+    		if(check == 1){
+    		sum = sum +1;
+    		}
+    	}
+    	
+    	return sum ;
+    }
+    
+    
+  public static int  m(int n )  {
+	 int length = array.length; 
+	int result= ((n%length)+length)%length;
+			return result;
+  }
+    
+    
+  public static void nextGeneration(){
+    	int[][] grid = new int[40][40];
+    	for(int i=1;i<array.length-1;i++){
+    		for(int j=1;j<array[0].length-1;j++){
+    			//heres my error nexTo is being called on eveything including side elements
+    			int stuff = nextTo(i,j);
+    			//System.out.println(stuff);
+   //Any live cell with fewer than two live neighbors dies,as if caused by under-population
+    			if(array[i][j] ==1 && stuff < 2){
+    				grid[i][j] = 0;
+    				//System.out.println("This is running");
+   
+    				
+   //Any live cell with two ro three live neighbours livs on to the next generation
+    			}else if(array[i][j]==1 && (stuff==2 || stuff ==3)){
+    				//System.out.println("This is running2");
+    				grid[i][j] = 1;
+    			}
+   //Any live cell with more than three neighbours dies, as if by over-population
+    			else if(array[i][j] == 1 && stuff >3){
+    				//System.out.println("This is running3");
+    				grid[i][j] = 0;
+    //Any dead cell with exactly three neighbors becomes a live cell as if by reproduction
+    			}else if(array[i][j] == 0 &&  stuff==3){
+    				grid[i][j] = 1;
+    			}else if(array[i][j] == 0 && stuff != 3 ){
+    				grid[i][j] = 0;
+    			}
+    		}
+    		
+    	}
+    	array = grid;
+    	
+    	
+           
+    }
+    
+   public static void drawArray(int[][] array,DrawingPanel p){
+    	
+    	
+	Graphics g =  p.getGraphics();
+	g.setColor(Color.WHITE);
+    	for(int i = 0; i< array.length;i++){
+    		for(int j = 0;j<array.length;j++){
+    			if(array[i][j]==1){
+    				
+    			g.fillRect(i*10, j*10, 10, 10);
+    			
+    			}
+    		}
+    	}
+    	
+    	}
+}

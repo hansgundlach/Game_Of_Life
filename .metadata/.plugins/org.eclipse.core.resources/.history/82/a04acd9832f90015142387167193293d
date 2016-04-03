@@ -1,0 +1,129 @@
+package newJAVart;
+
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class GameofLife {
+	
+	
+	static JPanel panel;
+	static JFrame frame;
+	public static void main(String args[]){
+		 /*panel = new JPanel();
+		    Dimension dim = new Dimension(400, 400);
+		    panel.setPreferredSize(dim);
+		    frame = new JFrame();
+		    frame.setSize(400, 400);
+		    Container contentPane = frame.getContentPane();
+		    contentPane.add(panel);
+		    frame.setVisible(true);
+		   
+		  
+		 
+		
+		    Graphics g = panel.getGraphics();
+		    drawArray(cs,g);*/
+		 panel = new JPanel();
+		    Dimension dim = new Dimension(400, 400);
+		    panel.setPreferredSize(dim);
+		    frame = new JFrame();
+		    frame.setSize(1000, 500);
+		    Container contentPane = frame.getContentPane();
+		    contentPane.add(panel);
+		    frame.setVisible(true);      
+		    int[][] cs = new int[][]{{1,0},{0,1}};
+		    
+		   Graphics g = panel.getGraphics();
+	       drawArray(cs, g);
+		    
+		
+	}
+	
+	/*public static int Neighbor(int i,int j){
+		//looks at all the neighbors 
+		int[] Neighbors = []
+		
+		return 1
+		
+		
+	}
+	
+	
+	
+	
+	
+	*/
+	
+	public static int surround(int[][] initial, int i, int j) {
+	    int[][] surrounding = {
+	            { initial[i - 1][j - 1], initial[i - 1][j],
+	                    initial[i - 1][j + 1] },
+	            { initial[i][j - 1], initial[i][j], initial[i][j + 1] },
+	            { initial[i + 1][j - 1], initial[i + 1][j],
+	                    initial[i + 1][j + 1] } };
+	    int counter = 0;
+	    for (int a = 0; a <= 2; a++) {
+	        for (int b = 0; b <= 2; b++) {
+	            if (surrounding[a][b] == 1) {
+	                counter++;
+	            }
+	        }
+	    }
+	    return counter;
+	}
+
+	/*
+	 * Prints the 2D array.
+	 */
+	public static void printArray(int[][] input) {
+	    for (int x = 0; x < input.length; x++) {
+	        for (int y = 0; y < input[0].length; y++) {
+	            System.out.print(input[x][y]);
+	        }
+	        System.out.println("");
+	    }
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * 
+	 * display array
+	 * @param array of integers 0 or 1 
+	 */
+	public static void drawArray(int[][] array, Graphics g) {
+	    int BOX_DIM = 10;
+	    for (int i = 0; i < array.length; i++) {
+	        for (int j = 0; j < array[0].length; j++) {
+	            g.drawRect(i * BOX_DIM, j * BOX_DIM, 10, 10);
+	            if (array[i][j] == 0) {
+	                g.setColor(Color.WHITE);
+	                g.fillRect(i * BOX_DIM, j * BOX_DIM, 10, 10);
+	            }
+	            if (array[i][j] == 1) {
+	                g.setColor(Color.BLACK);
+	                g.fillRect(i * BOX_DIM, j * BOX_DIM, 10, 10);
+	            }
+	        }
+	    }
+
+	}
+	
+	
+	
+	
+	
+
+}
